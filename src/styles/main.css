@@ -1,7 +1,8 @@
 /* -------------------------------------------------------------------------
    ClearRead — main stylesheet
-   CSS custom properties live on :root so JS services (TypographyService,
-   ThemeManager) only need to write to one place to restyle the whole reader.
+   CSS custom properties on :root are the only thing services need to write
+   to in order to restyle the whole reader. JS classes (TypographyService,
+   ThemeManager) update these variables; CSS does the rest.
    ------------------------------------------------------------------------- */
 
 :root {
@@ -13,9 +14,7 @@
   --reader-line-height: 1.5;
   --reader-max-width: 70ch;
 
-  /* Theme palette — will be owned by ThemeManager in Phase 2.
-     Default is BDA "cream" (warm off-white) per BDA Style Guide,
-     which recommends against pure white backgrounds. */
+  /* Palette — owned by ThemeManager (overridden per theme) */
   --bg-page: #fdf6e3;
   --bg-panel: #fffbf0;
   --fg-text: #2d2d2d;
@@ -24,20 +23,19 @@
   --accent: #4a6fa5;
   --accent-fg: #ffffff;
   --error: #b03030;
+
+  --transition: 180ms ease;
 }
 
 * { box-sizing: border-box; }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-}
+html, body { margin: 0; padding: 0; min-height: 100vh; }
 
 body {
-  font-family: 'Open Sans', system-ui, -apple-system, Segoe UI, sans-serif;
+  font-family: 'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   background: var(--bg-page);
   color: var(--fg-text);
+  transition: background var(--transition), color var(--transition);
 }
 
 .sr-only {
@@ -46,76 +44,72 @@ body {
   clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 
-/* ----- Layout ----- */
+/* ----- Header --------------------------------------------------------- */
 
 .app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border);
   background: var(--bg-panel);
 }
 
-.app-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  letter-spacing: 0.02em;
-}
+.app-header h1 { margin: 0; font-size: 1.5rem; letter-spacing: 0.02em; }
+.tagline { margin: 0.25rem 0 0; color: var(--fg-muted); font-size: 0.9rem; }
 
-.tagline {
-  margin: 0.25rem 0 0;
-  color: var(--fg-muted);
-  font-size: 0.9rem;
-}
+/* ----- Layout --------------------------------------------------------- */
 
 .app-main {
   display: grid;
-  grid-template-columns: 260px 1fr 280px;
+  grid-template-columns: 280px 1fr 300px;
   gap: 1rem;
   padding: 1rem;
   align-items: start;
 }
 
-@media (max-width: 1000px) {
-  .app-main {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 1100px) {
+  .app-main { grid-template-columns: 1fr; }
+  .side-panel { position: static !important; }
 }
 
-/* ----- Side panels ----- */
+/* ----- Side panels ---------------------------------------------------- */
 
-.input-panel,
-.settings-panel {
+.side-panel {
   background: var(--bg-panel);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 1rem;
   position: sticky;
   top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
 }
 
-.input-panel h2,
-.settings-panel h2 {
+.panel-section { margin-bottom: 1.25rem; }
+.panel-section:last-child { margin-bottom: 0; }
+
+h2 {
   font-size: 1rem;
-  margin: 0 0 0.75rem;
-  color: var(--fg-text);
-}
-
-.control {
-  margin-bottom: 0.75rem;
+  margin: 0 0 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 label {
   display: block;
   font-size: 0.85rem;
-  margin-bottom: 0.25rem;
+  margin: 0.6rem 0 0.25rem;
   color: var(--fg-text);
 }
 
-textarea,
-select,
-input[type="range"] {
+textarea, select, input[type="range"], input[type="file"], input[type="color"] {
   width: 100%;
   font-family: inherit;
   font-size: 0.9rem;
+  color: var(--fg-text);
 }
 
 textarea {
@@ -123,19 +117,30 @@ textarea {
   border-radius: 4px;
   padding: 0.5rem;
   resize: vertical;
-  background: white;
-  color: var(--fg-text);
+  background: var(--bg-page);
 }
 
 select {
   padding: 0.4rem;
   border: 1px solid var(--border);
   border-radius: 4px;
-  background: white;
+  background: var(--bg-page);
 }
 
-input[type="range"] {
-  accent-color: var(--accent);
+input[type="range"] { accent-color: var(--accent); }
+input[type="color"] {
+  height: 34px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-page);
+}
+
+input[type="file"] {
+  padding: 0.3rem;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  background: var(--bg-page);
 }
 
 button {
@@ -149,14 +154,25 @@ button {
   cursor: pointer;
   font-size: 0.95rem;
   font-family: inherit;
+  transition: filter var(--transition), background var(--transition);
+}
+button:not(:disabled):hover { filter: brightness(1.08); }
+button:not(:disabled):active { filter: brightness(0.95); }
+button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--fg-text);
+  border: 1px solid var(--border);
 }
 
-button:hover { filter: brightness(1.08); }
-button:active { filter: brightness(0.95); }
-button:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 2px;
+.speech-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.4rem;
 }
+.speech-controls button { margin-top: 0; padding: 0.45rem 0.3rem; font-size: 0.85rem; }
 
 .hint {
   margin: 0.5rem 0 0;
@@ -164,18 +180,35 @@ button:focus-visible {
   color: var(--fg-muted);
   min-height: 1em;
 }
+.hint.error { color: var(--error); }
+.hint.disclaimer { font-style: italic; }
 
-/* ----- Reader ----- */
+.ai-status { font-size: 0.8rem; }
+.ai-status.available { color: #2a7a2a; }
 
-.reader-panel {
-  display: flex;
-  justify-content: center;
+.info-btn {
+  width: auto;
+  margin: 0;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  line-height: 1;
 }
+.info-btn:hover { background: var(--bg-page); }
+
+/* ----- Reader --------------------------------------------------------- */
+
+.reader-panel { display: flex; justify-content: center; }
+
+.reader-frame { width: 100%; display: flex; justify-content: center; }
 
 .reader-view {
   background: var(--bg-panel);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 2rem 2.5rem;
   width: 100%;
   max-width: var(--reader-max-width);
@@ -187,17 +220,11 @@ button:focus-visible {
   line-height: var(--reader-line-height);
 
   color: var(--fg-text);
+  transition: background var(--transition), color var(--transition);
 }
 
-.reader-view:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.reader-view p {
-  margin: 0 0 1em;
-}
-
+.reader-view:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.reader-view p { margin: 0 0 1em; }
 .reader-view p:last-child { margin-bottom: 0; }
 
 .reader-view .placeholder {
@@ -205,14 +232,75 @@ button:focus-visible {
   font-style: italic;
   text-align: center;
 }
+.reader-view .placeholder.error { color: var(--error); font-style: normal; }
 
-.reader-view .placeholder.error {
-  color: var(--error);
-  font-style: normal;
-}
-
-/* Each word is wrapped in a span so Phase 2 (TTS highlight) and Phase 3
-   (click-to-split-syllables) can address it individually. */
+/* Word spans — base styles, theme overrides in themes.css */
 .reader-view .word {
-  /* Placeholder hook — styled in later phases. */
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background var(--transition);
 }
+.reader-view .word:hover { background: rgba(74, 111, 165, 0.12); }
+.reader-view .word.current-word {
+  background: rgba(255, 220, 0, 0.45);
+}
+.reader-view .word.split {
+  background: rgba(74, 111, 165, 0.08);
+  outline: 1px dashed var(--accent);
+  outline-offset: 1px;
+}
+
+/* ----- Research dialog ----------------------------------------------- */
+
+.research-dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  background: var(--bg-panel);
+  color: var(--fg-text);
+  max-width: 560px;
+  width: 92vw;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.25);
+}
+.research-dialog::backdrop { background: rgba(0,0,0,0.4); }
+
+.research-dialog h2 { font-size: 1.2rem; margin: 0 0 0.5rem; }
+.research-dialog h3 { font-size: 1rem; margin: 0.75rem 0 0.4rem; }
+.research-dialog h4 { font-size: 0.9rem; margin: 1rem 0 0.3rem; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.research-dialog p { line-height: 1.5; }
+.research-dialog .citation-list { padding-left: 1.2rem; }
+.research-dialog .citation-list li { margin-bottom: 0.3rem; font-size: 0.9rem; }
+.research-dialog .note {
+  margin-top: 0.8rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--bg-page);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.dialog-close {
+  width: auto;
+  margin: 0;
+  padding: 4px 10px;
+  float: right;
+  background: transparent;
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.evidence-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  margin-bottom: 0.3rem;
+}
+.evidence-strong { background: #d6f0d6; color: #1d5d1d; border-color: #b0d8b0; }
+.evidence-mixed { background: #fdf0c8; color: #6a5410; border-color: #e6d28a; }
+.evidence-preference { background: #d8e7f8; color: #1a3d70; border-color: #b3cee8; }

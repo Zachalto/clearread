@@ -1,0 +1,73 @@
+/* Reading-ruler overlay.
+   Three children of #ruler-overlay:
+     .ruler-mask-top, .ruler-bar, .ruler-mask-bottom
+   Positioned by two CSS variables that JS updates: --ruler-y and --ruler-h.
+   The overlay itself is position:fixed so it covers the viewport regardless
+   of scroll, and pointer-events:none so it never eats clicks. */
+
+.ruler-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  --ruler-y: -100px;
+  --ruler-h: 24px;
+  display: none;
+}
+
+.ruler-overlay[data-mode="bar"],
+.ruler-overlay[data-mode="dimmed"],
+.ruler-overlay[data-mode="spotlight"] {
+  display: block;
+}
+
+.ruler-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--ruler-y);
+  height: var(--ruler-h);
+  background: rgba(255, 230, 0, 0.18);
+  border-top: 1px solid rgba(255, 200, 0, 0.5);
+  border-bottom: 1px solid rgba(255, 200, 0, 0.5);
+}
+
+.ruler-mask-top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--ruler-y);
+  background: #000;
+  opacity: 0;
+}
+
+.ruler-mask-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--ruler-y) + var(--ruler-h));
+  bottom: 0;
+  background: #000;
+  opacity: 0;
+}
+
+/* Bar mode: only the bar is visible. */
+.ruler-overlay[data-mode="bar"] .ruler-mask { display: none; }
+
+/* Dimmed mode: dim the surroundings, keep the bar barely visible. */
+.ruler-overlay[data-mode="dimmed"] .ruler-mask-top,
+.ruler-overlay[data-mode="dimmed"] .ruler-mask-bottom {
+  opacity: 0.55;
+}
+.ruler-overlay[data-mode="dimmed"] .ruler-bar {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Spotlight mode: opaque mask, only the current line peeks through. */
+.ruler-overlay[data-mode="spotlight"] .ruler-mask-top,
+.ruler-overlay[data-mode="spotlight"] .ruler-mask-bottom {
+  opacity: 0.93;
+}
+.ruler-overlay[data-mode="spotlight"] .ruler-bar { background: transparent; border-color: transparent; }

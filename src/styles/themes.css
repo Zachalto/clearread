@@ -1,0 +1,22 @@
+/* Theme-specific tweaks beyond what ThemeManager sets via CSS variables.
+   Most of theming is variable-driven, but a few rules want the body data-
+   attribute as a hook (e.g. for the highlight colour, which should look
+   different on a dark background). */
+
+body[data-theme="dark"] .reader-view .word.current-word,
+body[data-theme="high-contrast"] .reader-view .word.current-word {
+  background: rgba(255, 212, 0, 0.55);
+  color: #1a1a1a;
+}
+
+body[data-theme="dark"] .reader-view .word:hover {
+  background: rgba(126, 160, 255, 0.18);
+}
+
+body[data-theme="high-contrast"] .reader-view .word:hover {
+  background: rgba(255, 212, 0, 0.25);
+}
+
+body[data-theme="high-contrast"] .reader-view {
+  border-width: 2px;
+}

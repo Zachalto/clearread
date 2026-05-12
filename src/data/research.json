@@ -1,0 +1,66 @@
+{
+  "typography": {
+    "title": "Typography for dyslexia",
+    "summary": "Larger size, increased line spacing, and a clean sans-serif font reduce visual strain and the rate of fixation errors. Wider character and word spacing further help by reducing visual crowding — the tendency for adjacent letters to interfere with each other in the reader's peripheral vision.",
+    "evidence": "strong",
+    "citations": [
+      "British Dyslexia Association (2023). Dyslexia Style Guide.",
+      "Rello, L. & Baeza-Yates, R. (2013). Good fonts for dyslexia. ASSETS '13."
+    ]
+  },
+  "letter-spacing": {
+    "title": "Increased letter spacing",
+    "summary": "A randomized study with dyslexic children found that increasing letter spacing improved reading accuracy by ~20% and reading speed without any training — the effect was attributed to reduced visual crowding.",
+    "evidence": "strong",
+    "citations": [
+      "Zorzi, M. et al. (2012). Extra-large letter spacing improves reading in dyslexia. PNAS, 109(28)."
+    ]
+  },
+  "theme": {
+    "title": "Colour themes and background",
+    "summary": "Pure white backgrounds increase glare for many dyslexic readers; warm off-whites (cream, beige) and dark themes are widely preferred. Coloured tinted overlays have a long history but research is mixed — they help some readers and not others, so we offer them as a user preference rather than a clinical claim.",
+    "evidence": "mixed",
+    "citations": [
+      "British Dyslexia Association (2023). Dyslexia Style Guide.",
+      "Henderson, L. M., Tsogka, N. & Snowling, M. J. (2013). Questioning the benefits that coloured overlays can have for reading in students with and without dyslexia. JORSEN, 13(1)."
+    ],
+    "note": "Frame coloured backgrounds as a personal-comfort setting, not a treatment."
+  },
+  "speech": {
+    "title": "Text-to-speech with word highlighting",
+    "summary": "A meta-analysis of 22 studies found that TTS — especially when paired with synchronized visual highlighting of the spoken word — produced a moderate positive effect on reading comprehension for struggling readers (d ≈ 0.35).",
+    "evidence": "strong",
+    "citations": [
+      "Wood, S. G., Moxley, J. H., Tighe, E. L., & Wagner, R. K. (2017). Does use of text-to-speech and related read-aloud tools improve reading comprehension for students with reading disabilities? A meta-analysis. Journal of Learning Disabilities."
+    ]
+  },
+  "ruler": {
+    "title": "Reading ruler / line focus",
+    "summary": "Dyslexic readers often show less stable binocular fixation, which makes it easy to skip or repeat lines. A reading ruler — a horizontal highlight, dimming, or spotlight — gives the eye a clear anchor and reduces regressions.",
+    "evidence": "strong",
+    "citations": [
+      "Bhattacharya, S. et al. (2023). Digital reading rulers for dyslexic readers. ACM CHI.",
+      "Bucci, M. P., Brémond-Gignac, D. & Kapoula, Z. (2011). Latency of saccades and vergence eye movements in dyslexic children. Experimental Brain Research."
+    ]
+  },
+  "syllables": {
+    "title": "Click-to-split syllables",
+    "summary": "Phonological processing — the ability to break words into smaller sound units — is the strongest predictor of reading difficulty in dyslexia. Structured Literacy explicitly teaches readers to decode long words by breaking them into syllables, and on-demand splitting supports that habit during independent reading. Implementation note: we use Liang's hyphenation algorithm via the Hypher library, which closely matches true English syllabification (~90%).",
+    "evidence": "strong",
+    "citations": [
+      "International Dyslexia Association. Structured Literacy: An Introduction.",
+      "Snowling, M. J. (2000). Dyslexia (2nd ed.). Blackwell.",
+      "Goswami, U. (2015). Sensory theories of developmental dyslexia: three challenges for research. Nature Reviews Neuroscience."
+    ]
+  },
+  "ai-simplify": {
+    "title": "AI-powered plain-language rewriting",
+    "summary": "Complex vocabulary and convoluted sentences are a documented barrier for many dyslexic readers, beyond what typography alone can fix. The Web Content Accessibility Guidelines (WCAG) and W3C Cognitive Accessibility Task Force both list plain-language alternatives as a primary accommodation. This feature applies plain-language principles (short sentences, common words, active voice) at the press of a button. It is a tool that applies the principles — not a treatment.",
+    "evidence": "preference",
+    "citations": [
+      "W3C Web Content Accessibility Guidelines 2.1 — Success Criterion 3.1.5 (Reading Level).",
+      "W3C Cognitive Accessibility Task Force. Making Content Usable for People with Cognitive and Learning Disabilities."
+    ],
+    "note": "Always verify AI-rewritten text against the original for important documents."
+  }
+}

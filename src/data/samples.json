@@ -1,0 +1,24 @@
+{
+  "samples": [
+    {
+      "id": "weather",
+      "title": "News: Storm warning",
+      "text": "Forecasters issued a severe weather warning on Tuesday morning as an unusually deep low-pressure system tracked across the country. Wind gusts of up to seventy miles per hour were recorded along the coast, and emergency services urged residents in low-lying areas to prepare for possible flooding overnight.\n\nSchools in three counties announced early closures, and several rail operators suspended services until conditions improved. Officials said the worst of the weather was expected to clear by Wednesday afternoon, but warned that fallen trees and power outages could continue to disrupt travel for the rest of the week."
+    },
+    {
+      "id": "biology",
+      "title": "Textbook: Photosynthesis",
+      "text": "Photosynthesis is the biochemical process by which green plants, algae, and some bacteria convert light energy — usually from the sun — into chemical energy stored in glucose. The reaction takes place primarily in the chloroplasts of plant cells, where the pigment chlorophyll absorbs photons in the red and blue regions of the visible spectrum.\n\nThe overall reaction combines six molecules of carbon dioxide and six molecules of water to produce one molecule of glucose and six molecules of oxygen. Although the equation appears straightforward, the underlying mechanism is remarkably intricate, comprising two distinct sets of reactions: the light-dependent reactions, which take place in the thylakoid membranes, and the light-independent Calvin cycle, which occurs in the surrounding stroma."
+    },
+    {
+      "id": "history",
+      "title": "History: The Industrial Revolution",
+      "text": "The Industrial Revolution, conventionally dated from the late eighteenth century in Britain, represented a fundamental transformation in the relationship between human beings and the natural world. Manufacturing, which had previously taken place in the home or in small workshops, increasingly moved into purpose-built factories powered first by water and then, decisively, by steam.\n\nThe consequences were extensive and frequently contradictory. While productivity surged and consumer goods became cheaper and more widely available, the working conditions endured by the new industrial labour force — including a large number of children — were often appalling. Urban populations swelled as agricultural workers migrated in search of employment, producing the sprawling, polluted cities that came to define the era."
+    },
+    {
+      "id": "vocab-stress",
+      "title": "Vocabulary stress-test",
+      "text": "The phenomenology of consciousness has long preoccupied philosophers, and contemporary cognitive scientists have inherited many of the same intractable puzzles. Phenomena such as introspection, self-reference, and the apparent unity of subjective experience resist reduction to neurophysiological explanation, despite considerable methodological sophistication.\n\nNeuroimaging investigations of metacognition — broadly, thinking about thinking — have nevertheless illuminated the involvement of prefrontal and parietal networks in monitoring one's own cognitive performance, an ability sometimes termed epistemic feeling. Whether these correlates constitute an explanation of consciousness, or merely a description of its neurological accompaniments, remains a matter of vigorous dispute."
+    }
+  ]
+}

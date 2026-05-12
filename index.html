@@ -5,36 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ClearRead — Dyslexia Reading Companion</title>
     <link rel="stylesheet" href="/src/styles/main.css" />
+    <link rel="stylesheet" href="/src/styles/themes.css" />
+    <link rel="stylesheet" href="/src/styles/ruler.css" />
   </head>
-  <body>
+  <body data-theme="bda-cream">
     <header class="app-header">
-      <h1>ClearRead</h1>
-      <p class="tagline">Evidence-based reading support for dyslexia</p>
+      <div>
+        <h1>ClearRead</h1>
+        <p class="tagline">Evidence-based reading support for dyslexia</p>
+      </div>
+      <button id="reset-settings-btn" class="btn-secondary" type="button" title="Reset all settings to defaults">Reset settings</button>
     </header>
 
     <main class="app-main">
-      <aside class="input-panel" aria-label="Text input">
-        <h2>Load text</h2>
-        <label for="paste-input" class="sr-only">Paste text</label>
-        <textarea
-          id="paste-input"
-          placeholder="Paste text here..."
-          rows="8"
-        ></textarea>
-        <button id="load-pasted-btn" type="button">Load text</button>
-        <p class="hint" id="input-status" aria-live="polite"></p>
+      <!-- LEFT PANEL: input + speech + AI -->
+      <aside class="side-panel input-panel" aria-label="Text input and controls">
+        <section class="panel-section">
+          <h2>Load text</h2>
+
+          <label for="sample-picker">Try a sample</label>
+          <select id="sample-picker">
+            <option value="">— pick a sample —</option>
+          </select>
+
+          <label for="paste-input">Or paste your own</label>
+          <textarea id="paste-input" placeholder="Paste text here..." rows="6"></textarea>
+          <button id="load-pasted-btn" type="button">Load pasted text</button>
+
+          <label for="file-input" class="file-label">Or upload a file (.txt, .docx, .pdf)</label>
+          <input
+            type="file"
+            id="file-input"
+            accept=".txt,.docx,.pdf,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          />
+          <p class="hint" id="input-status" aria-live="polite"></p>
+        </section>
+
+        <section class="panel-section">
+          <h2>
+            Read aloud
+            <button class="info-btn" type="button" data-feature="speech" aria-label="Why this helps: text-to-speech">ⓘ</button>
+          </h2>
+          <div class="speech-controls">
+            <button id="play-btn" type="button">▶ Play</button>
+            <button id="pause-btn" type="button" disabled>⏸ Pause</button>
+            <button id="stop-btn" type="button" disabled>⏹ Stop</button>
+          </div>
+
+          <label for="speech-rate">Speed: <span id="speech-rate-value">1.0</span>×</label>
+          <input type="range" id="speech-rate" min="0.5" max="2" step="0.1" value="1.0" />
+
+          <label for="speech-voice">Voice</label>
+          <select id="speech-voice">
+            <option value="">Default</option>
+          </select>
+        </section>
+
+        <section class="panel-section ai-section">
+          <h2>
+            Simplify with AI
+            <button class="info-btn" type="button" data-feature="ai-simplify" aria-label="Why this helps: AI simplification">ⓘ</button>
+          </h2>
+          <p class="hint" id="ai-status">Checking backend…</p>
+          <button id="simplify-btn" type="button" disabled>✨ Simplify this</button>
+          <div id="simplify-toggle-wrap" hidden>
+            <button id="simplify-toggle-btn" class="btn-secondary" type="button">Show original</button>
+            <p class="hint disclaimer">⚠ AI-rewritten. Meaning may differ slightly from the original.</p>
+          </div>
+        </section>
       </aside>
 
+      <!-- CENTER: reader -->
       <section class="reader-panel" aria-label="Reader">
-        <div id="reader-view" class="reader-view" tabindex="0">
-          <p class="placeholder">Paste some text on the left and click <strong>Load text</strong> to begin.</p>
+        <div class="reader-frame">
+          <div
+            id="reader-view"
+            class="reader-view"
+            tabindex="0"
+            role="document"
+            aria-label="Reading pane"
+          >
+            <p class="placeholder">Pick a sample, paste text, or upload a file to begin.<br />Click any word once it's loaded to split it into syllables.</p>
+          </div>
         </div>
       </section>
 
-      <aside class="settings-panel" aria-label="Typography settings">
-        <h2>Typography</h2>
+      <!-- RIGHT PANEL: display settings -->
+      <aside class="side-panel settings-panel" aria-label="Display settings">
+        <section class="panel-section">
+          <h2>
+            Theme
+            <button class="info-btn" type="button" data-feature="theme" aria-label="Why this helps: themes">ⓘ</button>
+          </h2>
+          <select id="theme-select">
+            <option value="bda-cream" selected>BDA Cream</option>
+            <option value="soft-pastel">Soft Pastel</option>
+            <option value="dark">Dark</option>
+            <option value="high-contrast">High Contrast</option>
+            <option value="custom">Custom…</option>
+          </select>
 
-        <div class="control">
+          <div id="custom-theme-controls" hidden>
+            <label for="custom-bg">Background color</label>
+            <input type="color" id="custom-bg" value="#ffeebb" />
+
+            <label for="custom-opacity">Tint strength: <span id="custom-opacity-value">0.70</span></label>
+            <input type="range" id="custom-opacity" min="0" max="1" step="0.05" value="0.7" />
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <h2>
+            Typography
+            <button class="info-btn" type="button" data-feature="typography" aria-label="Why this helps: typography">ⓘ</button>
+          </h2>
+
           <label for="font-family">Font</label>
           <select id="font-family">
             <option value="Arial, sans-serif">Arial</option>
@@ -44,44 +129,62 @@
             <option value="'Lexend', sans-serif">Lexend</option>
             <option value="'Comic Sans MS', cursive">Comic Sans</option>
           </select>
-        </div>
 
-        <div class="control">
-          <label for="font-size">
-            Font size: <span id="font-size-value">18</span>pt
-          </label>
+          <label for="font-size">Font size: <span id="font-size-value">18</span>pt</label>
           <input type="range" id="font-size" min="12" max="32" step="1" value="18" />
-        </div>
 
-        <div class="control">
-          <label for="letter-spacing">
-            Letter spacing: <span id="letter-spacing-value">0.05</span>em
-          </label>
+          <label for="letter-spacing">Letter spacing: <span id="letter-spacing-value">0.05</span>em</label>
           <input type="range" id="letter-spacing" min="0" max="0.3" step="0.01" value="0.05" />
-        </div>
 
-        <div class="control">
-          <label for="word-spacing">
-            Word spacing: <span id="word-spacing-value">0.16</span>em
-          </label>
+          <label for="word-spacing">Word spacing: <span id="word-spacing-value">0.16</span>em</label>
           <input type="range" id="word-spacing" min="0" max="1" step="0.02" value="0.16" />
-        </div>
 
-        <div class="control">
-          <label for="line-height">
-            Line height: <span id="line-height-value">1.5</span>
-          </label>
+          <label for="line-height">Line height: <span id="line-height-value">1.5</span></label>
           <input type="range" id="line-height" min="1" max="2.5" step="0.1" value="1.5" />
-        </div>
 
-        <div class="control">
-          <label for="max-width">
-            Max line width: <span id="max-width-value">70</span> characters
-          </label>
+          <label for="max-width">Max line width: <span id="max-width-value">70</span> chars</label>
           <input type="range" id="max-width" min="40" max="100" step="5" value="70" />
-        </div>
+        </section>
+
+        <section class="panel-section">
+          <h2>
+            Reading ruler
+            <button class="info-btn" type="button" data-feature="ruler" aria-label="Why this helps: reading ruler">ⓘ</button>
+          </h2>
+          <select id="ruler-mode">
+            <option value="off" selected>Off</option>
+            <option value="bar">Highlight bar</option>
+            <option value="dimmed">Dim surroundings</option>
+            <option value="spotlight">Spotlight (single line)</option>
+          </select>
+          <p class="hint">Move with mouse, or use ↑ / ↓ arrows.</p>
+        </section>
+
+        <section class="panel-section">
+          <h2>
+            Syllables
+            <button class="info-btn" type="button" data-feature="syllables" aria-label="Why this helps: syllables">ⓘ</button>
+          </h2>
+          <p class="hint">Click any word in the reader to split it into syllables. Click again to restore.</p>
+        </section>
       </aside>
     </main>
+
+    <!-- Reading ruler overlay -->
+    <div id="ruler-overlay" class="ruler-overlay" data-mode="off" aria-hidden="true">
+      <div class="ruler-mask ruler-mask-top"></div>
+      <div class="ruler-bar"></div>
+      <div class="ruler-mask ruler-mask-bottom"></div>
+    </div>
+
+    <!-- Research dialog ("Why this helps") -->
+    <dialog id="research-dialog" class="research-dialog" aria-labelledby="research-dialog-title">
+      <form method="dialog">
+        <button class="dialog-close" aria-label="Close">✕</button>
+      </form>
+      <h2 id="research-dialog-title">Why this helps</h2>
+      <div id="research-content"></div>
+    </dialog>
 
     <script type="module" src="/src/main.js"></script>
   </body>
