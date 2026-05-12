@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearRead — Dyslexia Reading Companion</title>
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>ClearRead</h1>
+      <p class="tagline">Evidence-based reading support for dyslexia</p>
+    </header>
+
+    <main class="app-main">
+      <aside class="input-panel" aria-label="Text input">
+        <h2>Load text</h2>
+        <label for="paste-input" class="sr-only">Paste text</label>
+        <textarea
+          id="paste-input"
+          placeholder="Paste text here..."
+          rows="8"
+        ></textarea>
+        <button id="load-pasted-btn" type="button">Load text</button>
+        <p class="hint" id="input-status" aria-live="polite"></p>
+      </aside>
+
+      <section class="reader-panel" aria-label="Reader">
+        <div id="reader-view" class="reader-view" tabindex="0">
+          <p class="placeholder">Paste some text on the left and click <strong>Load text</strong> to begin.</p>
+        </div>
+      </section>
+
+      <aside class="settings-panel" aria-label="Typography settings">
+        <h2>Typography</h2>
+
+        <div class="control">
+          <label for="font-family">Font</label>
+          <select id="font-family">
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="Verdana, sans-serif">Verdana</option>
+            <option value="Tahoma, sans-serif">Tahoma</option>
+            <option value="'Open Sans', sans-serif" selected>Open Sans</option>
+            <option value="'Lexend', sans-serif">Lexend</option>
+            <option value="'Comic Sans MS', cursive">Comic Sans</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label for="font-size">
+            Font size: <span id="font-size-value">18</span>pt
+          </label>
+          <input type="range" id="font-size" min="12" max="32" step="1" value="18" />
+        </div>
+
+        <div class="control">
+          <label for="letter-spacing">
+            Letter spacing: <span id="letter-spacing-value">0.05</span>em
+          </label>
+          <input type="range" id="letter-spacing" min="0" max="0.3" step="0.01" value="0.05" />
+        </div>
+
+        <div class="control">
+          <label for="word-spacing">
+            Word spacing: <span id="word-spacing-value">0.16</span>em
+          </label>
+          <input type="range" id="word-spacing" min="0" max="1" step="0.02" value="0.16" />
+        </div>
+
+        <div class="control">
+          <label for="line-height">
+            Line height: <span id="line-height-value">1.5</span>
+          </label>
+          <input type="range" id="line-height" min="1" max="2.5" step="0.1" value="1.5" />
+        </div>
+
+        <div class="control">
+          <label for="max-width">
+            Max line width: <span id="max-width-value">70</span> characters
+          </label>
+          <input type="range" id="max-width" min="40" max="100" step="5" value="70" />
+        </div>
+      </aside>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
