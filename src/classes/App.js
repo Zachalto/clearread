@@ -29,6 +29,7 @@ import { SpeechService } from './SpeechService.js';
 import { RulerController } from './RulerController.js';
 import { SyllableProcessor } from './SyllableProcessor.js';
 import { BionicReader } from './BionicReader.js';
+import { ReadabilityAnalyzer } from './ReadabilityAnalyzer.js';
 import { ResearchPanel } from './ResearchPanel.js';
 import { AISimplifier } from './AISimplifier.js';
 
@@ -46,6 +47,7 @@ export class App {
     });
     this.syllables = new SyllableProcessor();
     this.bionic = new BionicReader(this.store);
+    this.readability = new ReadabilityAnalyzer(this.syllables);
     this.ai = new AISimplifier();
 
     this.currentOriginal = ''; // last loaded original text
@@ -159,6 +161,7 @@ export class App {
     this.readerView.render(text);
     // Re-apply bionic styling to the freshly-rendered word spans.
     this.bionic.applyToAll(this.readerView.root);
+    this._updateReadability();
     this._setStatus(`Loaded ${this.readerView.wordCount} words.`);
   }
 
@@ -317,6 +320,7 @@ export class App {
       this.readerView.render(simplified);
       this.bionic.applyToAll(this.readerView.root);
       this._updateSimplifyToggleUI();
+      this._updateReadability();
       this._setStatus('Simplified version loaded. Toggle to compare.');
     } catch (err) {
       this._setStatus(err.message, true);
@@ -334,6 +338,37 @@ export class App {
     this.readerView.render(text);
     this.bionic.applyToAll(this.readerView.root);
     this._updateSimplifyToggleUI();
+    this._updateReadability();
+  }
+
+  _updateReadability() {
+    const bar = document.getElementById('readability-bar');
+    const text = document.getElementById('readability-text');
+    if (!this.currentOriginal) {
+      bar.hidden = true;
+      return;
+    }
+    bar.hidden = false;
+    const orig = this.readability.analyze(this.currentOriginal);
+    if (this.currentSimplified) {
+      const simp = this.readability.analyze(this.currentSimplified);
+      const improvement = orig.fkGrade != null && simp.fkGrade != null
+        ? Math.max(0, orig.fkGrade - simp.fkGrade)
+        : 0;
+      text.innerHTML = `
+        <span class="rb-label">Reading level:</span>
+        <span class="rb-orig"><strong>${escapeHtml(this.readability.formatGrade(orig.fkGrade))}</strong></span>
+        <span class="rb-arrow">→</span>
+        <span class="rb-simp"><strong class="improved">${escapeHtml(this.readability.formatGrade(simp.fkGrade))}</strong></span>
+        ${improvement >= 0.5 ? `<span class="rb-delta">−${improvement.toFixed(1)} grades easier</span>` : ''}
+      `;
+    } else {
+      text.innerHTML = `
+        <span class="rb-label">Reading level:</span>
+        <strong>${escapeHtml(this.readability.formatGrade(orig.fkGrade))}</strong>
+        <span class="rb-muted">${orig.words} words · ${orig.sentences} sentences · ${orig.syllables} syllables</span>
+      `;
+    }
   }
 
   _updateSimplifyToggleUI() {
@@ -412,4 +447,13 @@ function isTypingTarget(el) {
   if (!el) return false;
   const tag = el.tagName;
   return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }

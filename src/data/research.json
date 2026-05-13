@@ -43,6 +43,16 @@
       "Bucci, M. P., Brémond-Gignac, D. & Kapoula, Z. (2011). Latency of saccades and vergence eye movements in dyslexic children. Experimental Brain Research."
     ]
   },
+  "readability": {
+    "title": "Flesch-Kincaid reading level",
+    "summary": "The Flesch-Kincaid Grade Level (FKGL) is one of the most widely-used readability formulas. It was derived empirically by Kincaid and colleagues for the U.S. Navy in 1975 and is still required for U.S. federal plain-language compliance, insurance documents, and many education tools. The grade number predicts the U.S. school year at which the text becomes comfortably readable. ClearRead uses the formula 0.39·(words/sentences) + 11.8·(syllables/words) − 15.59, with per-word syllable counts derived from the same Hypher algorithm the syllable-splitter uses.",
+    "evidence": "strong",
+    "citations": [
+      "Kincaid, J. P., Fishburne, R. P., Rogers, R. L. & Chissom, B. S. (1975). Derivation of new readability formulas for Navy enlisted personnel. Naval Technical Training Command.",
+      "U.S. Plain Writing Act (2010) requires federal agencies to publish at grade levels Flesch-Kincaid can measure."
+    ],
+    "note": "Treat the number as a rough guide — ±1 grade is normal between different syllable-counting methods. The 'before/after' delta after Simplify is the more meaningful signal."
+  },
   "bionic": {
     "title": "Bionic Reading",
     "summary": "Bolding the first portion of each word creates 'fixation anchors' — high-contrast targets the eye can land on as it moves along the line. The technique was popularised by a 2017 Swiss app of the same name and has spread widely in dyslexia and ADHD communities online. Subjective reports from dyslexic readers are often positive, but controlled eye-tracking and comprehension studies have not produced consistent gains, so we expose it as a personal-preference mode rather than a treatment.",
