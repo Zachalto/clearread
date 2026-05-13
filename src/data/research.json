@@ -43,6 +43,16 @@
       "Bucci, M. P., Brémond-Gignac, D. & Kapoula, Z. (2011). Latency of saccades and vergence eye movements in dyslexic children. Experimental Brain Research."
     ]
   },
+  "bionic": {
+    "title": "Bionic Reading",
+    "summary": "Bolding the first portion of each word creates 'fixation anchors' — high-contrast targets the eye can land on as it moves along the line. The technique was popularised by a 2017 Swiss app of the same name and has spread widely in dyslexia and ADHD communities online. Subjective reports from dyslexic readers are often positive, but controlled eye-tracking and comprehension studies have not produced consistent gains, so we expose it as a personal-preference mode rather than a treatment.",
+    "evidence": "mixed",
+    "citations": [
+      "Casutt, R. (2017). Bionic Reading — original concept. bionic-reading.com",
+      "Multiple independent reading-research groups have published mixed empirical findings (2022–2024)."
+    ],
+    "note": "Try it on a passage you find tiring. If the bolded anchors help your eye flow, leave it on; if the alternating weight feels choppy, switch it off."
+  },
   "syllables": {
     "title": "Click-to-split syllables",
     "summary": "Phonological processing — the ability to break words into smaller sound units — is the strongest predictor of reading difficulty in dyslexia. Structured Literacy explicitly teaches readers to decode long words by breaking them into syllables, and on-demand splitting supports that habit during independent reading. Implementation note: we use Liang's hyphenation algorithm via the Hypher library, which closely matches true English syllabification (~90%).",

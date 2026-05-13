@@ -13,6 +13,9 @@
     "vite": "^5.4.10"
   },
   "dependencies": {
+    "@fontsource/lexend": "^5.2.11",
+    "@fontsource/open-sans": "^5.2.7",
+    "@fontsource/opendyslexic": "^5.2.5",
     "hyphenation.en-us": "^0.2.1",
     "hypher": "^0.2.5",
     "mammoth": "^1.12.0",

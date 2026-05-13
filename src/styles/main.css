@@ -6,8 +6,10 @@
    ------------------------------------------------------------------------- */
 
 :root {
-  /* Reader typography — owned by TypographyService */
-  --reader-font-family: 'Open Sans', system-ui, sans-serif;
+  /* Reader typography — owned by TypographyService.
+     Default to OpenDyslexic (bundled via @fontsource/opendyslexic) so new
+     users land on a dyslexia-targeted typeface without having to pick. */
+  --reader-font-family: 'OpenDyslexic', 'Open Sans', system-ui, sans-serif;
   --reader-font-size: 18pt;
   --reader-letter-spacing: 0.05em;
   --reader-word-spacing: 0.16em;
@@ -248,6 +250,30 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
   background: rgba(74, 111, 165, 0.08);
   outline: 1px dashed var(--accent);
   outline-offset: 1px;
+}
+
+/* Bionic Reading — bolded head of each word.
+   The inner <strong class="bionic-bold"> inherits everything from .word
+   except font-weight, so the rest of the word stays at the regular weight
+   and only the leading letters jump out. */
+.reader-view .bionic-bold {
+  font-weight: 700;
+}
+
+/* Checkbox rows used by feature toggles (Bionic, future modes). */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox-row input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
 }
 
 /* ----- Research dialog ----------------------------------------------- */

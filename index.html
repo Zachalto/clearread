@@ -122,11 +122,12 @@
 
           <label for="font-family">Font</label>
           <select id="font-family">
+            <option value="'OpenDyslexic', 'Open Sans', sans-serif" selected>OpenDyslexic (default)</option>
+            <option value="'Lexend', 'Open Sans', sans-serif">Lexend</option>
+            <option value="'Open Sans', sans-serif">Open Sans</option>
             <option value="Arial, sans-serif">Arial</option>
             <option value="Verdana, sans-serif">Verdana</option>
             <option value="Tahoma, sans-serif">Tahoma</option>
-            <option value="'Open Sans', sans-serif" selected>Open Sans</option>
-            <option value="'Lexend', sans-serif">Lexend</option>
             <option value="'Comic Sans MS', cursive">Comic Sans</option>
           </select>
 
@@ -144,6 +145,17 @@
 
           <label for="max-width">Max line width: <span id="max-width-value">70</span> chars</label>
           <input type="range" id="max-width" min="40" max="100" step="5" value="70" />
+        </section>
+
+        <section class="panel-section">
+          <h2>
+            Bionic Reading
+            <button class="info-btn" type="button" data-feature="bionic" aria-label="Why this helps: bionic reading">ⓘ</button>
+          </h2>
+          <label class="checkbox-row">
+            <input type="checkbox" id="bionic-toggle" />
+            <span>Bold the first half of each word</span>
+          </label>
         </section>
 
         <section class="panel-section">

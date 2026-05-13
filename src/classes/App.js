@@ -28,6 +28,7 @@ import { ThemeManager } from './ThemeManager.js';
 import { SpeechService } from './SpeechService.js';
 import { RulerController } from './RulerController.js';
 import { SyllableProcessor } from './SyllableProcessor.js';
+import { BionicReader } from './BionicReader.js';
 import { ResearchPanel } from './ResearchPanel.js';
 import { AISimplifier } from './AISimplifier.js';
 
@@ -44,6 +45,7 @@ export class App {
       settingsStore: this.store,
     });
     this.syllables = new SyllableProcessor();
+    this.bionic = new BionicReader(this.store);
     this.ai = new AISimplifier();
 
     this.currentOriginal = ''; // last loaded original text
@@ -79,6 +81,7 @@ export class App {
     this.bindInputControls();
     this.bindSpeechControls();
     this.bindSyllableClicks();
+    this.bindBionicToggle();
     this.bindResetButton();
     this.bindKeyboardShortcuts();
 
@@ -154,6 +157,8 @@ export class App {
     this.speech.stop();
     this.readerView.clearHighlight();
     this.readerView.render(text);
+    // Re-apply bionic styling to the freshly-rendered word spans.
+    this.bionic.applyToAll(this.readerView.root);
     this._setStatus(`Loaded ${this.readerView.wordCount} words.`);
   }
 
@@ -247,17 +252,31 @@ export class App {
 
   bindSyllableClicks() {
     this.readerView.onWordClick((wordEl) => {
+      const original = wordEl.dataset.original || wordEl.textContent;
       if (wordEl.classList.contains('split')) {
-        // Restore: pull the original token from data-original.
-        wordEl.textContent = wordEl.dataset.original || wordEl.textContent;
+        // Coming out of syllable-split. Restore either bionic styling
+        // (if that mode is on) or plain text.
         wordEl.classList.remove('split');
+        if (this.bionic.enabled) this.bionic.apply(wordEl);
+        else wordEl.textContent = original;
         return;
       }
-      const original = wordEl.dataset.original || wordEl.textContent;
       const display = this.syllables.formatWithDots(original);
-      if (display === original) return; // single-syllable word — nothing to show
+      if (display === original) return; // single-syllable — nothing to show
+      // Entering syllable-split: drop any bionic <strong> children first,
+      // then write the dot-joined form.
+      wordEl.replaceChildren();
       wordEl.textContent = display;
       wordEl.classList.add('split');
+    });
+  }
+
+  bindBionicToggle() {
+    const toggle = document.getElementById('bionic-toggle');
+    toggle.checked = this.bionic.enabled;
+    toggle.addEventListener('change', (e) => {
+      this.bionic.setEnabled(e.target.checked);
+      this.bionic.applyToAll(this.readerView.root);
     });
   }
 
@@ -296,6 +315,7 @@ export class App {
       this.currentSimplified = simplified;
       this.showingSimplified = true;
       this.readerView.render(simplified);
+      this.bionic.applyToAll(this.readerView.root);
       this._updateSimplifyToggleUI();
       this._setStatus('Simplified version loaded. Toggle to compare.');
     } catch (err) {
@@ -312,6 +332,7 @@ export class App {
     const text = this.showingSimplified ? this.currentSimplified : this.currentOriginal;
     this.speech.stop();
     this.readerView.render(text);
+    this.bionic.applyToAll(this.readerView.root);
     this._updateSimplifyToggleUI();
   }
 
