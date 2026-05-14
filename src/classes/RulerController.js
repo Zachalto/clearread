@@ -86,6 +86,9 @@ export class RulerController {
       this.lineHeightPx = fontSize * 1.2;
     }
     this.overlay.style.setProperty('--ruler-h', `${this.lineHeightPx}px`);
+    const rect = this.reader.getBoundingClientRect();
+    this.overlay.style.setProperty('--ruler-x', `${rect.left}px`);
+    this.overlay.style.setProperty('--ruler-w', `${rect.width}px`);
   }
 
   _onMouseMove(e) {

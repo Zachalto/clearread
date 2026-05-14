@@ -12,6 +12,8 @@
   pointer-events: none;
   --ruler-y: -100px;
   --ruler-h: 24px;
+  --ruler-x: 0px;
+  --ruler-w: 100vw;
   display: none;
 }
 
@@ -23,8 +25,8 @@
 
 .ruler-bar {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: var(--ruler-x);
+  width: var(--ruler-w);
   top: var(--ruler-y);
   height: var(--ruler-h);
   background: rgba(255, 230, 0, 0.18);
@@ -34,8 +36,8 @@
 
 .ruler-mask-top {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: var(--ruler-x);
+  width: var(--ruler-w);
   top: 0;
   height: var(--ruler-y);
   background: #000;
@@ -44,8 +46,8 @@
 
 .ruler-mask-bottom {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: var(--ruler-x);
+  width: var(--ruler-w);
   top: calc(var(--ruler-y) + var(--ruler-h));
   bottom: 0;
   background: #000;
