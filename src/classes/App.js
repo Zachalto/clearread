@@ -32,6 +32,8 @@ import { BionicReader } from './BionicReader.js';
 import { ReadabilityAnalyzer } from './ReadabilityAnalyzer.js';
 import { ResearchPanel } from './ResearchPanel.js';
 import { AISimplifier } from './AISimplifier.js';
+import samplesData from '../data/samples.json';
+import researchData from '../data/research.json';
 
 export class App {
   constructor() {
@@ -385,33 +387,22 @@ export class App {
   // ----- Research dialog + samples ------------------------------------------
 
   async _loadResearch() {
-    try {
-      const data = await ResearchPanel.load('/src/data/research.json');
-      this.research = new ResearchPanel({
-        dialogEl: document.getElementById('research-dialog'),
-        contentEl: document.getElementById('research-content'),
-        dataset: data,
-      });
-      this.research.bindTriggers(document);
-    } catch (err) {
-      console.warn('Research data failed to load:', err);
-    }
+    this.research = new ResearchPanel({
+      dialogEl: document.getElementById('research-dialog'),
+      contentEl: document.getElementById('research-content'),
+      dataset: researchData,
+    });
+    this.research.bindTriggers(document);
   }
 
   async _loadSamples() {
-    try {
-      const res = await fetch('/src/data/samples.json');
-      const data = await res.json();
-      this._samples = data.samples || [];
-      const picker = document.getElementById('sample-picker');
-      for (const s of this._samples) {
-        const opt = document.createElement('option');
-        opt.value = s.id;
-        opt.textContent = s.title;
-        picker.appendChild(opt);
-      }
-    } catch (err) {
-      console.warn('Samples failed to load:', err);
+    this._samples = samplesData.samples || [];
+    const picker = document.getElementById('sample-picker');
+    for (const s of this._samples) {
+      const opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = s.title;
+      picker.appendChild(opt);
     }
   }
 
